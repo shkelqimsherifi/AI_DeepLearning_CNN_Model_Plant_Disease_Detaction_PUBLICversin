@@ -1,0 +1,8 @@
+Statistic,Training Set,Validation Set
+Unique_categories,38,38
+Total Images,70295,17572
+Training_avg,1849.868421,462.4210526
+Training_std,104.3239315,26.13490465
+Training_min,1642,410
+Training_max,2022,505
+Balance_indicator,0.056,0.057

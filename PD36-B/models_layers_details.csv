@@ -1,0 +1,22 @@
+Layer,Type,Output Shape,Parameters
+Conv1_32_same,Conv2D,128x128x32,896
+Conv2_32_valid,Conv2D,126x126x32,9248
+MaxPool1,MaxPooling2D,63x63x32,0
+Conv3_64_same,Conv2D,63x63x64,18496
+Conv4_64_valid,Conv2D,61x61x64,36928
+MaxPool2,MaxPooling2D,30x30x64,0
+Conv5_128_same,Conv2D,30x30x128,73856
+Conv6_128_valid,Conv2D,28x28x128,147584
+MaxPool3,MaxPooling2D,14x14x128,0
+Conv7_256_same,Conv2D,14x14x256,295168
+Conv8_256_valid,Conv2D,12x12x256,590080
+MaxPool4,MaxPooling2D,6x6x256,0
+Conv9_512_same,Conv2D,6x6x512,1180160
+Conv10_512_valid,Conv2D,4x4x512,2359808
+MaxPool5,MaxPooling2D,2x2x512,0
+Dropout1_0.25,Dropout,2x2x512,0
+Flatten,Flatten,2048,0
+Dense_1536,Dense,1536,3147264
+Dropout2_0.4,Dropout,1536,0
+Output_38,Dense,1536,58406
+TOTAL,-,-,7917894
