@@ -1,0 +1,2 @@
+# AI_DeepLearning_CNN_Model_Plant_Disease_Detaction_PUBLICversin
+AI_DeepLearning_CNN_Model_Plant_Disease_Detaction
