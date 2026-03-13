@@ -565,5 +565,48 @@ if __name__ == "__main__":
 report: [treatments_en.py](./treatments_en.py)
 report: [treatments_sq.py](./treatments_sq.py)
 
+---
+
+## Quick Start — Testing the Model Without the Application
+
+> If you are **not comfortable running the full desktop application** or setting up the complete environment, you can use the provided script  
+> **[Testing_Model2_Plant_Disease.ipynb](./Testing_Model2_Plant_Disease.ipynb)** to **quickly test the model and perform predictions** on plant leaf images.
+
+### What does this script do?
+
+The notebook provides a **simple, step-by-step** workflow:
+
+1. **Loads the pre-trained model** (`trained_model2.keras`) - no training required.
+2. **Displays the model architecture summary** so you can inspect the network.
+3. **Reads a test image** of a plant leaf (supports `.jpg`, `.JPG`, `.png`).
+4. **Visualizes the image** using Matplotlib.
+5. **Predicts the disease class** and outputs the result.
+
+### How to use it
+
+1. **Open the notebook** in Jupyter Notebook.
+2. **Upload the model file** `trained_model2.keras` to the same working directory (or adjust the path in the notebook).  
+   You can download the model from the links provided in the [Models link](#models-link) section above.
+3. **Upload a plant leaf image** you want to test. The notebook comes with several example images you can try:
+   - `AppleCedarRust1.JPG`
+   - `CornCommonRust2.JPG`
+   - `PotatoHealthy1.JPG`
+   - `TomatoYellowCurlVirus1.JPG`
+   - `test_Yellow_LC.jpg`
+4. **Run all cells** sequentially - the notebook will load the model, display your image, and print the predicted disease label.
+
+### Why use this script?
+
+| Full Desktop App | Testing Script (Notebook) |
+|---|---|
+| Requires Python environment, Conda, GPU drivers, PySide6, and multiple dependencies | Only requires Python with TensorFlow, NumPy, OpenCV, and Matplotlib |
+| Designed for interactive, ongoing use | Designed for quick, one-off predictions |
+| Provides a full GUI with treatment information | Provides a lightweight command-line/notebook experience |
+| Best for researchers and developers | **Best for non-technical users** who just want to test the model |
+
+> **Tip:** Google Colab is the easiest way to run the notebook - it provides a free cloud environment with all dependencies pre-installed, so you don't need to install anything on your machine.
+
+---
+
 ### Read me update is coming soon!
 
