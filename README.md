@@ -410,6 +410,75 @@ PySide6
 opencv-python
 numpy<2.0.0
 
+## Model Architecture (PD36-C)
+
+```python
+
+from tensorflow.keras.layers import (Input, Conv2D, MaxPool2D, Dense,
+                                     Dropout, BatchNormalization, Activation,
+                                     GlobalAveragePooling2D)
+from tensorflow.keras.models import Sequential
+
+IMG_SIZE = (224, 224)
+NUM_CHANNELS = 3
+num_classes = 38  # 38 plant disease classes
+
+model = Sequential(
+    [
+        Input(shape=IMG_SIZE + (NUM_CHANNELS,), name="plant_input"),
+        data_augmentation,
+        normalization_layer,
+        Conv2D(32, (3, 3), padding="same", use_bias=False),
+        BatchNormalization(),
+        Activation("relu"),
+        Conv2D(32, (3, 3), padding="same", use_bias=False),
+        BatchNormalization(),
+        Activation("relu"),
+        MaxPool2D(pool_size=(2, 2)),
+
+        Conv2D(64, (3, 3), padding="same", use_bias=False),
+        BatchNormalization(),
+        Activation("relu"),
+        Conv2D(64, (3, 3), padding="same", use_bias=False),
+        BatchNormalization(),
+        Activation("relu"),
+        MaxPool2D(pool_size=(2, 2)),
+
+        Conv2D(128, (3, 3), padding="same", use_bias=False),
+        BatchNormalization(),
+        Activation("relu"),
+        Conv2D(128, (3, 3), padding="same", use_bias=False),
+        BatchNormalization(),
+        Activation("relu"),
+        MaxPool2D(pool_size=(2, 2)),
+
+        Conv2D(256, (3, 3), padding="same", use_bias=False),
+        BatchNormalization(),
+        Activation("relu"),
+        Conv2D(256, (3, 3), padding="same", use_bias=False),
+        BatchNormalization(),
+        Activation("relu"),
+        MaxPool2D(pool_size=(2, 2)),
+
+        Dropout(0.25),
+        GlobalAveragePooling2D(),
+        Dense(256, activation="relu"),
+        Dropout(0.4),
+        Dense(num_classes, activation="softmax", dtype="float32", name="predictions"),
+    ],
+    name="plant_disease_cnn",
+)
+
+model.compile(
+    optimizer=Adam(learning_rate=0.0001),
+    loss='categorical_crossentropy',
+    metrics=['accuracy']
+)
+
+model.summary()
+
+```
+
 ## Model Architecture (PD36-B)
 
 ```python
