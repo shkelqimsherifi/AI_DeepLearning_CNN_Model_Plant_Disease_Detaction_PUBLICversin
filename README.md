@@ -1,14 +1,211 @@
 # AI_DeepLearning_CNN_Model_Plant_Disease_Detaction
 
-## Models PD36-B Architecture
+## Models Overview
+
+This project includes three CNN model iterations for plant disease detection across **38 classes**:
+
+| Model | Input Size | Total Params | Trainable Params | Accuracy | Macro F1 | Epochs |
+|-------|-----------|-------------|-----------------|----------|----------|--------|
+| PD36-A | 128×128 | — | — | — | — | — |
+| PD36-B | 128×128 | ~14M | ~14M | **0.9657** | **0.9657** | 10 |
+| PD36-C | 224×224 | 3,748,248 (14.30 MB) | 1,248,774 (4.76 MB) | **0.9953** | **0.9953** | 30 |
+
+---
+
+## Model PD36-C (Latest)
+
+### PD36-C Architecture
+
+<img alt="plant_disease_cnn_architecture" src="./PD36-C/plant_disease_cnn_architecture.png" />
+
+<img alt="plant_disease_cnn_architecture_detailed" src="./PD36-C/plant_disease_cnn_architecture_detailed.png" />
+
+#### PD36-C Model Summary
+
+```
+Model: "plant_disease_cnn"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃ Layer (type)                    ┃ Output Shape           ┃       Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+│ plant_augmentation (Sequential) │ (None, 224, 224, 3)    │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ rescale_0_1 (Rescaling)         │ (None, 224, 224, 3)    │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d (Conv2D)                 │ (None, 224, 224, 32)   │           864 │
+│ batch_normalization             │ (None, 224, 224, 32)   │           128 │
+│ activation (Activation)         │ (None, 224, 224, 32)   │             0 │
+│ conv2d_1 (Conv2D)               │ (None, 224, 224, 32)   │         9,216 │
+│ batch_normalization_1           │ (None, 224, 224, 32)   │           128 │
+│ activation_1 (Activation)       │ (None, 224, 224, 32)   │             0 │
+│ max_pooling2d (MaxPooling2D)    │ (None, 112, 112, 32)   │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_2 (Conv2D)               │ (None, 112, 112, 64)   │        18,432 │
+│ batch_normalization_2           │ (None, 112, 112, 64)   │           256 │
+│ activation_2 (Activation)       │ (None, 112, 112, 64)   │             0 │
+│ conv2d_3 (Conv2D)               │ (None, 112, 112, 64)   │        36,864 │
+│ batch_normalization_3           │ (None, 112, 112, 64)   │           256 │
+│ activation_3 (Activation)       │ (None, 112, 112, 64)   │             0 │
+│ max_pooling2d_1 (MaxPooling2D)  │ (None, 56, 56, 64)     │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_4 (Conv2D)               │ (None, 56, 56, 128)    │        73,728 │
+│ batch_normalization_4           │ (None, 56, 56, 128)    │           512 │
+│ activation_4 (Activation)       │ (None, 56, 56, 128)    │             0 │
+│ conv2d_5 (Conv2D)               │ (None, 56, 56, 128)    │       147,456 │
+│ batch_normalization_5           │ (None, 56, 56, 128)    │           512 │
+│ activation_5 (Activation)       │ (None, 56, 56, 128)    │             0 │
+│ max_pooling2d_2 (MaxPooling2D)  │ (None, 28, 28, 128)    │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_6 (Conv2D)               │ (None, 28, 28, 256)    │       294,912 │
+│ batch_normalization_6           │ (None, 28, 28, 256)    │         1,024 │
+│ activation_6 (Activation)       │ (None, 28, 28, 256)    │             0 │
+│ conv2d_7 (Conv2D)               │ (None, 28, 28, 256)    │       589,824 │
+│ batch_normalization_7           │ (None, 28, 28, 256)    │         1,024 │
+│ activation_7 (Activation)       │ (None, 28, 28, 256)    │             0 │
+│ max_pooling2d_3 (MaxPooling2D)  │ (None, 14, 14, 256)    │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ dropout (Dropout)               │ (None, 14, 14, 256)    │             0 │
+│ global_average_pooling2d        │ (None, 256)            │             0 │
+│ dense (Dense)                   │ (None, 256)            │        65,792 │
+│ dropout_1 (Dropout)             │ (None, 256)            │             0 │
+│ predictions (Dense)             │ (None, 38)             │         9,766 │
+└─────────────────────────────────┴────────────────────────┴───────────────┘
+ Total params: 3,748,248 (14.30 MB)
+ Trainable params: 1,248,774 (4.76 MB)
+ Non-trainable params: 1,920 (7.50 KB)
+ Optimizer params: 2,497,554 (9.53 MB)
+```
+
+#### Key Architectural Improvements over PD36-B
+
+- **Batch Normalization** after every Conv2D layer for faster, more stable training
+- **GlobalAveragePooling2D** instead of Flatten — reduces overfitting and parameter count dramatically
+- **Data Augmentation** pipeline built into the model (`plant_augmentation` Sequential layer)
+- **Input Rescaling** layer (`rescale_0_1`) for automatic pixel normalization
+- **Higher resolution input** (224×224 vs 128×128) for better feature extraction
+- **~9× fewer trainable parameters** (1.25M vs ~14M) while achieving **higher accuracy**
+
+#### PD36-C Parameter Analysis
+
+<img alt="03_parameter_count_by_layer" src="./PD36-C/plant_outputs_cnn/03_parameter_count_by_layer.png" />
+
+<img alt="03_memory_usage_breakdown" src="./PD36-C/plant_outputs_cnn/03_memory_usage_breakdown.png" />
+
+### PD36-C Training
+
+Training was performed over **30 epochs** with learning rate scheduling (0.0001 → 0.00005 at epoch 15).
+
+| Metric | Train | Validation | Test |
+|--------|-------|------------|------|
+| Accuracy | 0.9970 | 0.9953 | 0.9953 |
+| Loss | 0.4411 | 0.4290 | 0.4290 |
+
+<img alt="ModelAccuracyLoss" src="./PD36-C/plant_outputs_cnn/ModelAccuracyLoss.png" />
+
+<img alt="training_performance_analysis" src="./PD36-C/plant_outputs_cnn/training_performance_analysis.png" />
+
+report: [training_log.csv](./PD36-C/plant_outputs_cnn/training_log.csv)
+
+### PD36-C Data Augmentation
+
+<img alt="data_augmentation_pipeline" src="./PD36-C/plant_outputs_cnn/data_augmentation_pipeline.png" />
+
+<img alt="AugmentedImages" src="./PD36-C/plant_outputs_cnn/AugmentedImages.png" />
+
+### PD36-C Dataset Analysis
+
+<img alt="dataset_analysis_comprehensive" src="./PD36-C/plant_outputs_cnn/dataset_analysis_comprehensive.png" />
+
+<img alt="Dataset" src="./PD36-C/plant_outputs_cnn/Dataset.png" />
+
+<img alt="SampleImages" src="./PD36-C/plant_outputs_cnn/SampleImages.png" />
+
+report: [dataset_category_counts.csv](./PD36-C/plant_outputs_cnn/dataset_category_counts.csv)
+
+report: [dataset_composition_summary.csv](./PD36-C/plant_outputs_cnn/dataset_composition_summary.csv)
+
+### PD36-C Evaluation Results
+
+#### Confusion Matrix
+
+<img alt="confusion_matrix" src="./PD36-C/plant_outputs_cnn/confusion_matrix.csv" />
+
+<img alt="confusion_matrix_eval" src="./PD36-C/plant_outputs_cnn/eval_results/confusion_matrix.png" />
+
+#### Classification Metrics
+
+<img alt="classification_metrics" src="./PD36-C/plant_outputs_cnn/classification_metrics.png" />
+
+<img alt="Per-classEvaluation" src="./PD36-C/plant_outputs_cnn/Per-classEvaluation.png" />
+
+#### Summary
+
+- Accuracy: **0.9953**
+- Macro Avg Precision: **0.9953**
+- Macro Avg Recall: **0.9952**
+- Macro Avg F1: **0.9953**
+- Weighted Avg F1: **0.9953**
+
+report: [classification_report.csv](./PD36-C/plant_outputs_cnn/classification_report.csv)
+
+report: [advanced_metrics_per_class.csv](./PD36-C/plant_outputs_cnn/advanced_metrics_per_class.csv)
+
+#### Confidence Analysis
+
+| Confidence Range | Count | Correct | Accuracy |
+|-----------------|-------|---------|----------|
+| [0.5–0.6) | 131 | 112 | 85.50% |
+| [0.6–0.7) | 225 | 210 | 93.33% |
+| [0.7–0.8) | 475 | 465 | 97.89% |
+| [0.8–0.9) | 1,501 | 1,495 | 99.60% |
+| [0.9–1.0) | 15,108 | 15,104 | 99.97% |
+
+> **85.9%** of all predictions have confidence ≥ 0.9 with **99.97% accuracy** in that range.
+
+<img alt="prediction_confidence_analysis" src="./PD36-C/plant_outputs_cnn/prediction_confidence_analysis.png" />
+
+#### ROC & Precision-Recall Curves
+
+<img alt="roc_and_pr_curves" src="./PD36-C/plant_outputs_cnn/roc_and_pr_curves.png" />
+
+### PD36-C Feature Visualization
+
+#### Feature Maps (Trained Model)
+
+<img alt="feature_maps_trained_model" src="./PD36-C/plant_outputs_cnn/feature_viz/feature_maps_trained_model.png" />
+
+#### Feature Space (t-SNE)
+
+<img alt="feature_space_tsne" src="./PD36-C/plant_outputs_cnn/feature_viz/feature_space_tsne.png" />
+
+#### Grad-CAM — Correct Predictions
+
+<img alt="gradcam_correct_predictions" src="./PD36-C/plant_outputs_cnn/feature_viz/gradcam_correct_predictions.png" />
+
+#### Grad-CAM — Incorrect Predictions
+
+<img alt="gradcam_incorrect_predictions" src="./PD36-C/plant_outputs_cnn/feature_viz/gradcam_incorrect_predictions.png" />
+
+#### Evaluation Triangle Plots
+
+<img alt="triangle_plots_traning" src="./PD36-C/plant_outputs_cnn/eval_results/triangle_plots_traning.png" />
+
+<img alt="triangle_plots_validation" src="./PD36-C/plant_outputs_cnn/eval_results/triangle_plots_validation.png" />
+
+<img alt="triangle_plots_test" src="./PD36-C/plant_outputs_cnn/eval_results/triangle_plots_test.png" />
+
+### PD36-C Full Notebook
+
+notebook: [Eval_Plant_Disease_Model3.ipynb](./PD36-C/Eval_Plant_Disease_Model3.ipynb)
+
+---
+
+## Model PD36-B
+
+### PD36-B Architecture
 
 <img width="6552" height="4153" alt="01_enhanced_architecture_diagram" src="https://github.com/user-attachments/assets/5bcc9354-c572-4c17-a3cc-0fc1742f9c5c" />
 
-### Models PD36-B Architecture
-
 ![Model1ArchitectureStruct](https://github.com/user-attachments/assets/a8cd521f-db22-44af-882e-88a1724478b0)
-
-### Models PD36-B Architecture
 
 ![Model1Architecture](https://github.com/user-attachments/assets/93ddee2a-d36c-4792-a3c5-e9d6476086b3)
 
@@ -20,7 +217,7 @@
 
 <img width="2955" height="2348" alt="03_memory_usage_breakdown" src="https://github.com/user-attachments/assets/9ed705e9-817c-46d9-9a14-504dfcd4605a" />
 
-### Model traning report
+### Model training report
 
 #### Check the detailed report of the model training history over 10 epochs.
 
@@ -113,6 +310,8 @@ report: [Classification.csv](./Classification.csv)
 - Macro Avg F1: **0.9657**
 - Weighted Avg F1: **0.9657**
 
+---
+
 ## App UI
 
 ![Windows_App_UI_Qt](https://github.com/user-attachments/assets/fdd647bc-251f-47e5-9ab5-e957f9dbaf98)
@@ -123,6 +322,7 @@ report: [Classification.csv](./Classification.csv)
 ### Models link:
 1. PD36-A https://drive.google.com/file/d/1AUIx6B43zLuamtWcA5GRrJcpw35PTAMg/view?usp=sharing
 2. PD36-B https://drive.google.com/file/d/1gBR4Ycu2qeKm0VDCaNaSh7IUyQlqd14G/view?usp=sharing
+3. PD36-C — available in the [`PD36-C/plant_outputs_cnn/`](./PD36-C/plant_outputs_cnn/) directory: `best_plant_model.keras` / `plant_trained_model.keras`
 
 ## Quick Start - Testing the Model Without the Application
 
@@ -210,7 +410,7 @@ PySide6
 opencv-python
 numpy<2.0.0
 
-## Model Architecture
+## Model Architecture (PD36-B)
 
 ```python
 
@@ -607,9 +807,3 @@ report: [treatments_en.py](./treatments_en.py)
 report: [treatments_sq.py](./treatments_sq.py)
 
 ---
-
-
-
-
-### Read me update is coming soon!
-
